@@ -1,0 +1,125 @@
+name: Build & Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      deploy_mode:
+        description: 'Deploy mode (all, local, cloud)'
+        required: false
+        default: 'all'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            target: aarch64-apple-darwin
+            label: macOS-arm64
+          - platform: macos-latest
+            target: x86_64-apple-darwin
+            label: macOS-x64
+          - platform: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            label: Linux-x64
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            label: Windows-x64
+
+    runs-on: ${{ matrix.platform }}
+    name: Build (${{ matrix.label }})
+
+    env:
+      DEPLOY_MODE: ${{ github.event.inputs.deploy_mode || 'all' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ── System dependencies ──
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev \
+            patchelf libssl-dev libgtk-3-dev libayatana-appindicator3-dev
+
+      # ── Rust ──
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: app/src-tauri
+
+      # ── Node.js ──
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: app
+        run: npm ci
+
+      # ── Python ──
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        working-directory: agent
+        run: pip install -e .
+
+      # ── Build ──
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_DEPLOY_MODE: ${{ env.DEPLOY_MODE }}
+        with:
+          projectPath: app
+          tauriScript: npm run tauri
+          args: --target ${{ matrix.target }}
+
+      # ── Upload artifacts ──
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: MXCoWork-${{ matrix.label }}
+          path: |
+            app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.dmg
+            app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.app
+            app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.deb
+            app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.AppImage
+            app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.msi
+            app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.exe
+          if-no-files-found: warn
+
+  # ── Release (only on tag push) ──
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
+          draft: true

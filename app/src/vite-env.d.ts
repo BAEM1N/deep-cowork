@@ -1,0 +1,13 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_DEPLOY_MODE?: "local" | "cloud" | "all";
+  readonly VITE_APP_NAME?: string;
+  readonly VITE_APP_ID?: string;
+  readonly VITE_APP_SUBTITLE?: string;
+  readonly VITE_WINDOW_TITLE?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

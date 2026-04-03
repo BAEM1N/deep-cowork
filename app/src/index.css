@@ -1,0 +1,274 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────
+   SAMSUNG ONE UI — Design System (Dark)
+   Palette: deep dark + primary (#1259C3)
+   Inspired by DeepCoWork dark mode
+   ───────────────────────────────────────────── */
+
+@theme inline {
+  /* Typography */
+  --font-sans:    'Geist Variable', -apple-system, 'DeepCoWorkOne', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Geist Variable', -apple-system, 'DeepCoWorkOne', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+
+  /* Radius scale — DeepCoWork: very rounded */
+  --radius-sm:  0.5rem;
+  --radius-md:  0.75rem;
+  --radius-lg:  1.125rem;
+  --radius-xl:  1.5rem;
+  --radius-2xl: 2rem;
+  --radius:     0.75rem;
+
+  /* Semantic color mappings → CSS vars */
+  --color-background:        var(--background);
+  --color-surface:           var(--surface);
+  --color-surface-elevated:  var(--surface-elevated);
+  --color-foreground:        var(--foreground);
+  --color-muted:             var(--muted);
+  --color-muted-foreground:  var(--muted-foreground);
+  --color-border:            var(--border);
+  --color-input:             var(--input);
+  --color-ring:              var(--ring);
+
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent:             var(--accent);
+  --color-accent-foreground:  var(--accent-foreground);
+  --color-secondary:          var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card:               var(--card);
+  --color-card-foreground:    var(--card-foreground);
+  --color-popover:            var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-destructive:        var(--destructive);
+
+  /* Status semantic colors */
+  --color-nominal:  var(--nominal);
+  --color-info:     var(--info);
+  --color-warning:  var(--warning);
+  --color-critical: var(--critical);
+
+  /* Sidebar */
+  --color-sidebar:                  var(--sidebar);
+  --color-sidebar-foreground:       var(--sidebar-foreground);
+  --color-sidebar-primary:          var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:           var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border:           var(--sidebar-border);
+  --color-sidebar-ring:             var(--sidebar-ring);
+
+  /* Chart (reuse status palette) */
+  --color-chart-1: var(--nominal);
+  --color-chart-2: var(--info);
+  --color-chart-3: var(--warning);
+  --color-chart-4: var(--critical);
+  --color-chart-5: var(--accent);
+}
+
+/* ── Dark (default) — DeepCoWork ──────── */
+:root {
+  color-scheme: dark;
+
+  /* Core surfaces — dark: near-black with clear surface layers */
+  --background:       #0a0a0c;
+  --surface:          #151518;
+  --surface-elevated: #1e1e22;
+
+  --foreground:       #ecedf0;
+  --muted:            #2a2a30;
+  --muted-foreground: #808590;
+
+  --border:  #2a2a30;
+  --input:   #1a1a1f;
+  --ring:    rgba(56, 132, 255, 0.5);
+
+  /* Brand accent — primary */
+  --primary:            #3884ff;
+  --primary-foreground: #ffffff;
+
+  /* Secondary — subtle cool */
+  --secondary:            #1e1e22;
+  --secondary-foreground: #b0b4bc;
+
+  /* Accent (highlight) */
+  --accent:            #252530;
+  --accent-foreground: #ecedf0;
+
+  /* Card / Popover */
+  --card:               #151518;
+  --card-foreground:    #ecedf0;
+  --popover:            #1e1e22;
+  --popover-foreground: #ecedf0;
+
+  --destructive: #ff4d4d;
+
+  /* Status */
+  --nominal:  #34c759;
+  --info:     #3884ff;
+  --warning:  #ffb340;
+  --critical: #ff4d4d;
+
+  /* Sidebar — slightly lighter than background */
+  --sidebar:                    #0f0f12;
+  --sidebar-foreground:         #b0b4bc;
+  --sidebar-primary:            #3884ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent:             #1a1a20;
+  --sidebar-accent-foreground:  #b0b4bc;
+  --sidebar-border:             #222228;
+  --sidebar-ring:               rgba(56, 132, 255, 0.4);
+}
+
+/* ── Light override (opt-in via .light class) ── */
+.light {
+  color-scheme: light;
+
+  --background:       #f5f6f8;
+  --surface:          #ffffff;
+  --surface-elevated: #ffffff;
+
+  --foreground:       #1a1a1f;
+  --muted:            #e8e9ec;
+  --muted-foreground: #6e7380;
+
+  --border:  #dfe0e4;
+  --input:   #f0f1f3;
+  --ring:    rgba(20, 100, 200, 0.4);
+
+  --primary:            #1464c8;
+  --primary-foreground: #ffffff;
+
+  --secondary:            #f0f1f3;
+  --secondary-foreground: #3a3d45;
+
+  --accent:            #e8e9ec;
+  --accent-foreground: #3a3d45;
+
+  --card:               #ffffff;
+  --card-foreground:    #1a1a1f;
+  --popover:            #ffffff;
+  --popover-foreground: #1a1a1f;
+
+  --destructive: #e53935;
+
+  --nominal:  #2da44e;
+  --info:     #1464c8;
+  --warning:  #d49300;
+  --critical: #e53935;
+
+  --sidebar:                    #f0f1f3;
+  --sidebar-foreground:         #3a3d45;
+  --sidebar-primary:            #1464c8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent:             #e8e9ec;
+  --sidebar-accent-foreground:  #3a3d45;
+  --sidebar-border:             #dfe0e4;
+  --sidebar-ring:               rgba(20, 100, 200, 0.3);
+}
+
+/* ── Base layer ───────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    font-feature-settings: "cv01", "cv02", "cv03", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* Scrollbar — macOS-native thin style */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+    background-clip: padding-box;
+  }
+  /* Auto-hide scrollbar until hover */
+  ::-webkit-scrollbar-thumb:not(:hover) {
+    background: transparent;
+  }
+  *:hover > ::-webkit-scrollbar-thumb,
+  *:hover::-webkit-scrollbar-thumb {
+    background: var(--border);
+    background-clip: padding-box;
+  }
+
+  /* Selection — primary tint */
+  ::selection {
+    background: rgba(56, 132, 255, 0.3);
+    color: inherit;
+  }
+}
+
+/* ── styled component helpers ────────── */
+
+/* Status badge pill */
+.badge-nominal  { @apply border; background: rgba(52,199,89,0.12); border-color: rgba(52,199,89,0.35); color: #34c759; }
+.badge-info     { @apply border; background: rgba(56,132,255,0.12); border-color: rgba(56,132,255,0.35); color: #5a9eff; }
+.badge-warning  { @apply border; background: rgba(255,179,64,0.12); border-color: rgba(255,179,64,0.35); color: #ffb340; }
+.badge-critical { @apply border; background: rgba(255,77,77,0.12); border-color: rgba(255,77,77,0.35); color: #ff6b6b; }
+
+/* Message streaming cursor — primary */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #3884ff;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+/* Soft glow on focused inputs — primary ring */
+.input-focus:focus-within {
+  box-shadow: 0 0 0 2px rgba(56, 132, 255, 0.35);
+  border-color: rgba(56, 132, 255, 0.6) !important;
+}
+
+/* Panel divider */
+.panel-divider {
+  width: 1px;
+  background: #222228;
+}
+
+/* DeepCoWork card elevation */
+.styled-card {
+  background: #151518;
+  border: 1px solid #2a2a30;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* primary gradient accent bar */
+.accent-bar {
+  height: 2px;
+  background: linear-gradient(90deg, #3884ff 0%, #6aacff 50%, #3884ff 100%);
+  opacity: 0.6;
+}

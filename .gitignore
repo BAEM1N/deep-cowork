@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.egg-info/
+
+# Build
+dist/
+target/
+*.dmg
+*.msi
+*.exe
+*.deb
+*.AppImage
+
+# Environment
+.env
+.env.local.local
+*.cowork.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tauri
+app/src-tauri/target/

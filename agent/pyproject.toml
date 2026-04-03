@@ -1,0 +1,16 @@
+[project]
+name = "deepcowork-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "deepagents>=0.4.12",
+    "langgraph-checkpoint-sqlite>=3.0.3",
+    "langchain-anthropic>=1.4.0",
+    "langchain-openai>=1.1.12",
+    "fastapi>=0.135.2",
+    "aiosqlite>=0.19.0",
+    "python-dotenv>=1.2.2",
+    "uvicorn>=0.42.0",
+]
