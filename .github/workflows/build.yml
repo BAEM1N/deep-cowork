@@ -37,8 +37,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       # ── System dependencies ──
       - name: Install Linux dependencies
@@ -74,11 +72,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies & PyInstaller
         working-directory: agent
-        run: pip install -e .
+        run: |
+          pip install -e .
+          pip install pyinstaller
 
-      # ── Build ──
+      # ── Bundle Python as sidecar ──
+      - name: Build agent sidecar (PyInstaller)
+        working-directory: agent
+        run: python bundle.py
+
+      # ── Build Tauri (includes sidecar) ──
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
@@ -93,7 +98,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: MXCoWork-${{ matrix.label }}
+          name: DeepCoWork-${{ matrix.label }}
           path: |
             app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.dmg
             app/src-tauri/target/${{ matrix.target }}/release/bundle/**/*.app

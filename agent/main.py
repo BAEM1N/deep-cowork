@@ -73,6 +73,12 @@ app.include_router(files_router)
 
 
 if __name__ == "__main__":
+    import argparse
     import uvicorn
-    port = int(os.getenv("PORT", 8008))
-    uvicorn.run(app, host="127.0.0.1", port=port)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", 8008)))
+    args = parser.parse_args()
+
+    os.environ["PORT"] = str(args.port)
+    uvicorn.run(app, host="127.0.0.1", port=args.port)

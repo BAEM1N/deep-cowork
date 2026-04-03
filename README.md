@@ -2,48 +2,67 @@
 
 AI 에이전트 데스크톱 앱 — [Deep Agents SDK](https://github.com/langchain-ai/deepagents) 기반 멀티에이전트 협업 도구
 
+## Download
+
+[Releases](https://github.com/BAEM1N/deep-cowork/releases)에서 OS별 설치 파일 다운로드:
+
+| OS | 파일 |
+|----|------|
+| macOS (Apple Silicon) | `DeepCoWork_x.x.x_aarch64.dmg` |
+| macOS (Intel) | `DeepCoWork_x.x.x_x64.dmg` |
+| Windows | `DeepCoWork_x.x.x_x64-setup.exe` |
+| Linux | `DeepCoWork_x.x.x_amd64.AppImage` |
+
+> Python 설치 불필요 — 에이전트 서버가 앱에 포함되어 있습니다.
+
 ## Features
 
-- **DeepAgents SDK** — `create_deep_agent` + `LocalShellBackend` + `interrupt_on` HITL
+- **DeepAgents SDK** — `create_deep_agent` + `LocalShellBackend` + HITL
 - **4 Modes** — Clarify, Code, Cowork, ACP (Multi-Agent)
 - **Skills** — 폴더 기반 SKILL.md 에이전트 능력 확장
 - **HITL** — write_file, edit_file, execute 승인/거부
 - **Multi-Provider** — Anthropic, OpenRouter, Ollama, LM Studio, vLLM
-- **Dark/Light Theme** — 다크/라이트 테마 전환
+- **Dark/Light Theme**
 - **i18n** — 한국어/English
-- **Cross-Platform** — macOS, Windows, Linux (Tauri)
+- **Cross-Platform** — macOS, Windows, Linux
 
-## Quick Start
+## Development
 
 ```bash
-# 1. Install dependencies
+# 1. Clone
+git clone https://github.com/BAEM1N/deep-cowork.git
+cd deep-cowork
+
+# 2. Install
 cd app && npm install
 cd ../agent && python -m venv .venv && source .venv/bin/activate && pip install -e .
 
-# 2. Set API key
-echo "OPENROUTER_API_KEY=sk-or-..." > agent/.env
-echo "LLM_PROVIDER=openrouter" >> agent/.env
-echo "MODEL_NAME=anthropic/claude-sonnet-4-5" >> agent/.env
+# 3. Set API key
+cp .env.example .env
+# Edit .env with your API key
 
-# 3. Run
-cd app && npm run tauri dev
+# 4. Run (dev mode)
+cd ../app && npm run tauri dev
 ```
 
 ## Build
 
 ```bash
-npm run build              # Default (all providers)
-npm run build:local        # Ollama/LM Studio/vLLM only
-npm run build:cloud        # Anthropic/OpenRouter only
-npm run tauri build        # Desktop package (.dmg/.msi/.deb)
+# Desktop package (current OS)
+cd app && npm run tauri build
+
+# Build variants
+npm run build:local   # Ollama/LM Studio/vLLM only
+npm run build:cloud   # Anthropic/OpenRouter only
 ```
 
 ## Architecture
 
 ```
-app/          — Tauri + React frontend
-agent/        — FastAPI + DeepAgents backend
-docs/         — Design docs & implementation log
+app/          — Tauri 2 + React frontend
+agent/        — FastAPI + DeepAgents SDK backend
+  bundle.py   — PyInstaller sidecar builder
+docs/         — Design docs
 ```
 
 ## License
